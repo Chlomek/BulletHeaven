@@ -17,8 +17,7 @@ public class Shoot : MonoBehaviour
 
     void start()
     {
-        lvl = GameObject.Find("Player").GetComponent<XPSystem>().level;
-        //lvl = GetComponent<XPSystem>().level;
+        GetPistolLevel();
     }
 
     public void ShootBullet()
@@ -32,18 +31,30 @@ public class Shoot : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        lvl = GameObject.Find("Player").GetComponent<XPSystem>().level;
-        firerate = 1f / lvl;
-        /*
+        GetPistolLevel();
+        
         switch(lvl)
         {
             case 1:
                 firerate = 1;
                 break;
             case 2:
+                firerate = 0.8f;
+                break;
+            case 3:
+                firerate = 0.75f;
+                break;
+            case 4:
+                firerate = 0.66f;
+                break;
+            case 5:
                 firerate = 0.5f;
+                break;
+            default:
+                firerate = 1f / lvl;
+                break;
         }
-        */
+        
         if (Time.timeSinceLevelLoad - lastShot >= firerate)
         {
             try
@@ -58,6 +69,10 @@ public class Shoot : MonoBehaviour
             ShootBullet();
             lastShot = Time.timeSinceLevelLoad;
         }
+    }
+    private void GetPistolLevel()
+    {
+        lvl = GameObject.Find("Player").GetComponent<XPSystem>().pistolLvl;
     }
 }
 

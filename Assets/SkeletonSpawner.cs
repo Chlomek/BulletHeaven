@@ -5,7 +5,8 @@ using UnityEngine;
 public class SkeletonSpawner : MonoBehaviour
 {
     public float spawnRate = 1;
-    public float distanceFactor = 20;
+    public float minDistance = 20;
+    public float maxDistance = 20;
     private float lastSpawn;
     public GameObject skeletonPrefab;
 
@@ -31,8 +32,16 @@ public class SkeletonSpawner : MonoBehaviour
 
         if (Time.timeSinceLevelLoad - lastSpawn >= spawnRate)
         {
+            /*
             Vector3 randomPosition = Random.onUnitSphere * distanceFactor;
             GameObject newSkeleton = Instantiate(skeletonPrefab, transform.position + randomPosition, Quaternion.identity) as GameObject;
+            */
+            float spawnDistance = Mathf.Lerp(minDistance, maxDistance, Mathf.Sqrt(Random.value));
+            Vector2 randomCircle = Random.insideUnitCircle.normalized * spawnDistance;
+            Vector3 randomPosition = new Vector3(randomCircle.x, randomCircle.y, 0);
+
+            GameObject newSkeleton = Instantiate(skeletonPrefab, transform.position + randomPosition, Quaternion.identity);
+
             lastSpawn = Time.timeSinceLevelLoad;
         }
     }
