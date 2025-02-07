@@ -10,6 +10,7 @@ public class Health : MonoBehaviour
     public int health;
     [SerializeField]
     public int enemyValue = 1;
+    private float lastHitTime = 0;
 
     private bool Isplayer = false;
 
@@ -23,7 +24,16 @@ public class Health : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        health -= damage;
+        if(Isplayer)
+        {
+            if(Time.time - lastHitTime < 0.5)
+            {
+                return;
+            }
+            lastHitTime = Time.time;
+        }
+
+        health -= damage;    
         if (health <= 0)
         {
             HandleDeath();

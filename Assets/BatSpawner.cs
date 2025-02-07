@@ -22,7 +22,7 @@ public class BatSpawner : MonoBehaviour
 
             float spawnDistance = Mathf.Lerp(minDistance, maxDistance, Mathf.Sqrt(Random.value));
             Vector2 randomCircle = Random.insideUnitCircle.normalized * spawnDistance;
-            Vector3 randomPosition = new Vector3(randomCircle.x, randomCircle.y, 0);
+            Vector3 randomPosition = new Vector3(randomCircle.x, randomCircle.y, 0) + transform.position;
 
             for (int i = 0; i < numBatsToSpawn; i++)
             {
