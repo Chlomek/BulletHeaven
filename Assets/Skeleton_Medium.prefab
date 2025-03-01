@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: -4639110782502903875}
   - component: {fileID: 732284102744065131}
   m_Layer: 0
-  m_Name: Skeleton
+  m_Name: Skeleton_Medium
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -79,7 +79,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: ba8394884ed37e446bc5ecd52daa55aa, type: 3}
-  m_Color: {r: 1, g: 0, b: 0, a: 1}
+  m_Color: {r: 0.21368816, g: 0.30891654, b: 0.9245283, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -180,6 +180,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 10
   health: 0
+  enemyValue: 1
   orb: {fileID: 6313112570599523014, guid: 9649fb11304dec34a915d33da247a35e, type: 3}
 --- !u!70 &732284102744065131
 CapsuleCollider2D:

@@ -9,21 +9,31 @@ public class SkeletonSpawner : MonoBehaviour
     public float maxDistance = 20;
     private float lastSpawn;
     public GameObject skeletonPrefab;
+    public float startSpawning = 0;
+    public float endSpawning = 60;
+
+    public float firstSpawnRate = 1;
+    public float secondSpawnRate = 0.7f;
+    public float thirdSpawnRate = 0.4f;
 
     void Update()
     {
         float gameTime = Time.timeSinceLevelLoad;
-        if (gameTime < 10)
+        if (gameTime < startSpawning || gameTime > endSpawning)
         {
-            spawnRate = 2;
+            return;
         }
-        else if (gameTime < 20)
+        if (gameTime < endSpawning/3)
         {
-            spawnRate = 1;
+            spawnRate = firstSpawnRate;
         }
-        else if (gameTime < 30)
+        else if (gameTime < endSpawning / 3 * 2)
         {
-            spawnRate = 0.5f;
+            spawnRate = secondSpawnRate;
+        }
+        else if (gameTime < endSpawning)
+        {
+            spawnRate = thirdSpawnRate;
         }
         else
         {

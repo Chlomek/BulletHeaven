@@ -11,10 +11,19 @@ public class BatSpawner : MonoBehaviour
     public int maxBats = 40;       // Maximum number of bats in a group
     public GameObject batPrefab;   // Bat prefab to spawn
 
+    public float startSpawning = 30;
+    public float endSpawning = 3000;
+
     private float lastSpawnTime;
 
     void Update()
     {
+        float gameTime = Time.timeSinceLevelLoad;
+        if (gameTime < startSpawning || gameTime > endSpawning)
+        {
+            return;
+        }
+
         if (Time.timeSinceLevelLoad - lastSpawnTime >= spawnRate)
         {
             // Spawn a random number of bats between minBats and maxBats
