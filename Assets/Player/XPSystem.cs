@@ -14,6 +14,7 @@ public class XPSystem : MonoBehaviour
     private int usedLevels = 1;
 
     public int pistolLvl = 1;
+    public int rpgLvl = 1;
 
     // Start is called before the first frame update
     void Start()
