@@ -248,9 +248,7 @@ public class XPSystem : MonoBehaviour
         {
             if (garlicLvl == 0)
             {
-                // Unlock Garlic
-                availableAbilities.Add("Garlic");
-                Debug.Log("Garlic unlocked!");
+                UnlockAbility("Garlic");
             }
             garlicLvl++;
             Debug.Log("Garlic upgraded to level " + garlicLvl);
@@ -343,6 +341,14 @@ public class XPSystem : MonoBehaviour
                     break;
                 case "Garlic":
                     garlicLvl = 1;
+
+                    GameObject player = GameObject.Find("Player");
+                    if (player != null)
+                    {
+                        Transform garlicTransform = player.transform.Find("Garlic");
+                        if (garlicTransform != null)
+                            garlicTransform.gameObject.SetActive(true);
+                    }
                     break;
             }
 
