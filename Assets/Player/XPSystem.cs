@@ -6,33 +6,30 @@ using TMPro;
 
 public class XPSystem : MonoBehaviour
 {
-    // XP and level variables
     public int xp;
     public int level = 1;
     public float xpMultiplierForNextLevel = 1.5f;
     public float xpNeededForNextLevel;
     public int availableUpgradePoints = 0;
 
-    // Weapon/ability levels
     public int pistolLvl = 1;
     public int rpgLvl = 1;
-    public int garlicLvl = 0;  // Starting at 0 means not unlocked yet
+    public int garlicLvl = 0;
 
-    // UI References
     [Header("UI References")]
     public GameObject upgradePanel;
-    public Button[] upgradeButtons;  // Array of 3 buttons
+    public Button[] upgradeButtons;
     public TextMeshProUGUI levelText;
     public TextMeshProUGUI xpText;
+    public Slider xpSlider;
     public Image xpFillBar;
 
-    // Ability names and descriptions
     [System.Serializable]
     public class AbilityInfo
     {
         public string abilityName;
         public string description;
-        public int maxLevel = 10;
+        public int maxLevel = 6;
         public Sprite icon;
     }
 
@@ -41,42 +38,31 @@ public class XPSystem : MonoBehaviour
     public AbilityInfo rpgInfo;
     public AbilityInfo garlicInfo;
 
-    // List of available abilities
     private List<string> availableAbilities = new List<string>();
-
-    // Reference to button text components
     private TextMeshProUGUI[] buttonTexts;
     private Image[] buttonIcons;
 
     void Start()
     {
-        // Initialize XP system
         xp = 0;
         xpNeededForNextLevel = 10;
 
-        // Hide upgrade panel initially
         if (upgradePanel != null)
             upgradePanel.SetActive(false);
 
-        // Initialize ability list
         InitializeAbilities();
 
-        // Cache button text components
         buttonTexts = new TextMeshProUGUI[upgradeButtons.Length];
         buttonIcons = new Image[upgradeButtons.Length];
 
         for (int i = 0; i < upgradeButtons.Length; i++)
         {
-            // Add listeners to buttons
-            int buttonIndex = i;  // Create local variable for closure
+            int buttonIndex = i;
             upgradeButtons[i].onClick.AddListener(() => UpgradeSelectedAbility(buttonIndex));
 
-            // Get text and icon components (assuming they're children of the button)
             buttonTexts[i] = upgradeButtons[i].GetComponentInChildren<TextMeshProUGUI>();
             buttonIcons[i] = upgradeButtons[i].transform.Find("AbilityIcon")?.GetComponent<Image>();
         }
-
-        // Update UI
         UpdateUI();
     }
 
@@ -100,10 +86,8 @@ public class XPSystem : MonoBehaviour
 
     void InitializeAbilities()
     {
-        // Add abilities that are available from the start
         availableAbilities.Add("Pistol");
 
-        // RPG and Garlic can be initially unavailable and unlocked later
         if (rpgLvl > 0)
             availableAbilities.Add("RPG");
 
@@ -149,14 +133,18 @@ public class XPSystem : MonoBehaviour
             if (garlicLvl >= garlicInfo.maxLevel && abilityOptions.Contains("Garlic"))
                 abilityOptions.Remove("Garlic");
 
-            // Special case: If RPG is not unlocked yet, add it as an option after level 3
+            if (!availableAbilities.Contains("RPG"))
+                abilityOptions.Add("RPG");
+
+            if (!availableAbilities.Contains("Garlic"))
+                abilityOptions.Add("Garlic");
+            /*
             if (!availableAbilities.Contains("RPG") && level >= 3)
                 abilityOptions.Add("RPG");
 
-            // Special case: If Garlic is not unlocked yet, add it as an option after level 5
             if (!availableAbilities.Contains("Garlic") && level >= 5)
                 abilityOptions.Add("Garlic");
-
+            */
             // If we have fewer options than buttons, add placeholders or duplicate options
             while (abilityOptions.Count < upgradeButtons.Length && abilityOptions.Count > 0)
             {
@@ -288,7 +276,11 @@ public class XPSystem : MonoBehaviour
 
         // Update XP fill bar
         if (xpFillBar != null)
-            xpFillBar.fillAmount = (float)xp / xpNeededForNextLevel;
+        {
+            //xpFillBar.fillAmount = (float)xp / xpNeededForNextLevel;
+            xpSlider.maxValue = xpNeededForNextLevel;
+            xpSlider.value = xp;
+        }
     }
 
     // Get upgrade descriptions
