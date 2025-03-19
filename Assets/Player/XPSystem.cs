@@ -237,11 +237,12 @@ public class XPSystem : MonoBehaviour
         {
             if (rpgLvl == 0)
             {
-                // Unlock RPG
-                availableAbilities.Add("RPG");
-                Debug.Log("RPG unlocked!");
+                UnlockAbility("RPG");
             }
-            rpgLvl++;
+            else
+            {
+                rpgLvl++;
+            }
             Debug.Log("RPG upgraded to level " + rpgLvl);
         }
         else if (buttonName.Contains("Garlic"))
@@ -250,7 +251,10 @@ public class XPSystem : MonoBehaviour
             {
                 UnlockAbility("Garlic");
             }
-            garlicLvl++;
+            else
+            {
+                garlicLvl++;
+            }
             Debug.Log("Garlic upgraded to level " + garlicLvl);
         }
 
@@ -293,9 +297,10 @@ public class XPSystem : MonoBehaviour
         switch (currentLevel)
         {
             case 1: return "Fire rate +20%";
-            case 2: return "Damage +15%";
+            case 2: return "Damage +20%";
             case 3: return "Fire rate +25%";
             case 4: return "Bullet speed +20%";
+            case 5: return "Evolution: Machine Gun";
             default: return "Overall damage +10%";
         }
     }
@@ -305,10 +310,10 @@ public class XPSystem : MonoBehaviour
         switch (currentLevel)
         {
             case 0: return "New weapon: Rocket Launcher";
-            case 1: return "Splash radius +15%";
+            case 1: return "Splash radius +20%";
             case 2: return "Damage +20%";
             case 3: return "Fire rate +15%";
-            case 4: return "Splash radius +20%";
+            case 4: return "Splash radius +25%";
             default: return "Overall damage +15%";
         }
     }
@@ -319,10 +324,10 @@ public class XPSystem : MonoBehaviour
         {
             case 0: return "New ability: Damage nearby enemies";
             case 1: return "Area of effect +20%";
-            case 2: return "Damage +15%";
+            case 2: return "Damage +25%";
             case 3: return "Tick rate increased";
             case 4: return "Area of effect +25%";
-            default: return "Overall damage +10%";
+            default: return "Overall damage +20%";
         }
     }
 
@@ -333,16 +338,20 @@ public class XPSystem : MonoBehaviour
         {
             availableAbilities.Add(abilityName);
 
-            // Set initial level based on the ability
+            GameObject player = GameObject.Find("Player");
             switch (abilityName)
             {
                 case "RPG":
                     rpgLvl = 1;
+                    if (player != null)
+                    {
+                        Transform rpgTransform = player.transform.Find("Rocket Launcher");
+                        if (rpgTransform != null)
+                            rpgTransform.gameObject.SetActive(true);
+                    }
                     break;
                 case "Garlic":
                     garlicLvl = 1;
-
-                    GameObject player = GameObject.Find("Player");
                     if (player != null)
                     {
                         Transform garlicTransform = player.transform.Find("Garlic");

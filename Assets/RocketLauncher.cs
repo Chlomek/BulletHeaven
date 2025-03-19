@@ -5,82 +5,50 @@ using System.Linq;
 
 public class RocketLauncher : MonoBehaviour
 {
-    public float firerate = 2; // Slower fire rate for rocket launcher
-    public GameObject rocket; // Rocket prefab
+    [SerializeField] private int Damage = 10;
+    [SerializeField] private float firerate = 2; 
+    [SerializeField] private float rocketSpeed = 7;
+    [SerializeField] private float splashRadius = 3;
+    public GameObject rocket;
     private GameObject myTarget;
     private float lastShot = 0.0f;
     private GameObject[] targets;
-    public float rocketSpeed = 7; // Slower speed for rockets
-    private int lvl;
-
-    [SerializeField] private AudioSource launchSound; // Optional audio for firing
-    [SerializeField] private Transform launchPoint; // Optional spawn point for rockets
+    private int lvl = 0;
+    [SerializeField] private XPSystem xpSystem;
 
     void Start()
     {
         GetRPGLevel();
-
-        // If no launch point is specified, use the current transform
-        if (launchPoint == null)
-            launchPoint = transform;
+        if (xpSystem == null)
+        {
+            Debug.LogError("XPSystem not found in the scene!");
+        }
     }
 
     public void FireRocket()
     {
-        // Use launch point position if available, otherwise use transform position
-        Vector3 spawnPosition = launchPoint != null ? launchPoint.position : transform.position;
-
-        GameObject newRocket = Instantiate(rocket, spawnPosition, transform.rotation);
+        GameObject newRocket = Instantiate(rocket, transform.position, transform.rotation);
         Vector2 direction = (myTarget.transform.position - transform.position).normalized;
 
-        // First set the direction for the ProjectileBehavior
         RocketBehavior projectile = newRocket.GetComponent<RocketBehavior>();
-        if (projectile != null)
-        {
-            projectile.SetDirection(direction);
-            projectile.speed = rocketSpeed;
-        }
+        projectile.SetDirection(direction);
+        projectile.speed = rocketSpeed;
+        projectile.damage = Damage;
+        projectile.splashRadius = splashRadius;
 
-        // Ensure the Rigidbody2D velocity is also set directly
         Rigidbody2D rb = newRocket.GetComponent<Rigidbody2D>();
         if (rb != null)
         {
             rb.velocity = direction * rocketSpeed;
         }
-
-        // Play launch sound if available
-        if (launchSound != null)
-            launchSound.Play();
+        projectile.SetDamage(Damage);
     }
 
     void Update()
     {
-        GetRPGLevel();
-
-        if (lvl == 0)
-            return;
-        // Adjust fire rate based on RPG level
-        switch (lvl)
+        if (lvl != xpSystem.rpgLvl)
         {
-            case 1:
-                firerate = 2f; // Slower base fire rate
-                break;
-            case 2:
-                firerate = 1.8f;
-                break;
-            case 3:
-                firerate = 1.6f;
-                break;
-            case 4:
-                firerate = 1.4f;
-                break;
-            case 5:
-                firerate = 1.2f;
-                break;
-            default:
-                // For higher levels, continue to decrease fire rate but with diminishing returns
-                firerate = 2f / (1 + (lvl - 1) * 0.2f);
-                break;
+            UpdaterpgLevel();
         }
 
         if (Time.timeSinceLevelLoad - lastShot >= firerate)
@@ -88,11 +56,8 @@ public class RocketLauncher : MonoBehaviour
             try
             {
                 targets = GameObject.FindGameObjectsWithTag("Enemy");
-
-                // Target the enemy with the most nearby enemies for maximum splash damage
                 myTarget = GetBestSplashTarget();
 
-                // If no good splash target is found, target the closest enemy
                 if (myTarget == null)
                 {
                     myTarget = targets.OrderBy(go => (transform.position - go.transform.position).sqrMagnitude).First();
@@ -100,7 +65,7 @@ public class RocketLauncher : MonoBehaviour
             }
             catch
             {
-                return; // No enemies found
+                return;
             }
 
             FireRocket();
@@ -112,14 +77,6 @@ public class RocketLauncher : MonoBehaviour
     {
         GameObject bestTarget = null;
         int maxNearbyEnemies = 0;
-
-        // Get splash radius from rocket prefab if possible
-        float splashRadius = 3f;
-        if (rocket.TryGetComponent<RocketBehavior>(out RocketBehavior rocketBehavior))
-        {
-            // This assumes you've made splashRadius public or created a getter method
-            splashRadius = rocketBehavior.splashRadius;
-        }
 
         foreach (GameObject potentialTarget in targets)
         {
@@ -146,9 +103,57 @@ public class RocketLauncher : MonoBehaviour
         return maxNearbyEnemies > 0 ? bestTarget : null;
     }
 
+    private void UpdaterpgLevel()
+    {
+        GetRPGLevel();
+
+        switch (lvl)
+        {
+            case 0:
+                gameObject.SetActive(false);
+                Debug.Log("rpg weapon deactivated (level 0)");
+                return;
+            case 1:
+                Damage = 15;
+                firerate = 2f;
+                rocketSpeed = 7;
+                splashRadius = 2f;
+                break;
+            case 2:
+                Damage = 18;
+                firerate = 2f;
+                rocketSpeed = 7;
+                splashRadius = 2.4f;
+                break;
+            case 3:
+                Damage = 18;
+                firerate = 1.7f;
+                rocketSpeed = 7;
+                splashRadius = 2.4f;
+                break;
+            case 4:
+                Damage = 18;
+                firerate = 1.7f;
+                rocketSpeed = 7;
+                splashRadius = 2.4f;
+                break;
+            case 5:
+                Damage = 18;
+                firerate = 1.7f;
+                rocketSpeed = 7;
+                splashRadius = 3f;
+                break; 
+            default:
+                Damage = 10;
+                firerate = 2f;
+                rocketSpeed = 7;
+                splashRadius = 2f;
+                break;
+        }
+    }
+
     private void GetRPGLevel()
     {
-        // Updated to use rpgLvl instead of pistolLvl
-        lvl = GameObject.Find("Player").GetComponent<XPSystem>().rpgLvl;
+        lvl = xpSystem.rpgLvl;
     }
 }

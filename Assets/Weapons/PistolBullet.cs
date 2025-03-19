@@ -4,15 +4,14 @@ using UnityEngine;
 
 public class ProjectileBehavior : MonoBehaviour
 {
-    [SerializeField]
-    private int damage = 10;
 
-    public float speed = 10f; // Speed of the bullet
+    private int damage = 10;
+    public float speed = 10f;
+    [SerializeField] private int bulletDespawn = 2;
+
     private Rigidbody2D rb;
     private Vector2 direction;
-    [SerializeField]
-    private int bulletDespawn = 2;
-
+    
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -27,10 +26,9 @@ public class ProjectileBehavior : MonoBehaviour
         transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle - 90));
     }
 
-    // Update is called once per frame
-    void Update()
+    public void SetDamage(int newDamage)
     {
-
+        damage = newDamage;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
