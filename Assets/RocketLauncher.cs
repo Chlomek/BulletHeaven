@@ -57,6 +57,8 @@ public class RocketLauncher : MonoBehaviour
     {
         GetRPGLevel();
 
+        if (lvl == 0)
+            return;
         // Adjust fire rate based on RPG level
         switch (lvl)
         {
