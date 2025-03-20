@@ -7,12 +7,14 @@ public class XPOrb : MonoBehaviour
     public float attractionDistance = 5f;
     public float attractionSpeed = 2f;
     public int xpAmount = 1;
+    public int lifeTime = 30;
 
     private Transform player;
 
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
+        Destroy(gameObject, lifeTime);
     }
 
     void Update()
@@ -32,9 +34,8 @@ public class XPOrb : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            // Assuming you have a Player script with an AddXP method
-            collision.GetComponent<XPSystem>().AddXP(xpAmount); // Add XP to the player
-            Destroy(gameObject); // Destroy the XP orb
+            collision.GetComponent<XPSystem>().AddXP(xpAmount);
+            Destroy(gameObject);
         }
     }
 }

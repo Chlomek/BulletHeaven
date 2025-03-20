@@ -101,6 +101,7 @@ MonoBehaviour:
   attractionDistance: 2
   attractionSpeed: 3
   xpAmount: 1
+  lifeTime: 30
 --- !u!58 &1424128595581201617
 CircleCollider2D:
   m_ObjectHideFlags: 0
