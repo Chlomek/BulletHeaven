@@ -15,6 +15,7 @@ public class XPSystem : MonoBehaviour
     public int pistolLvl = 1;
     public int rpgLvl = 1;
     public int garlicLvl = 0;
+    public int laserLvl = 0;
 
     [Header("UI References")]
     public GameObject upgradePanel;
@@ -37,6 +38,7 @@ public class XPSystem : MonoBehaviour
     public AbilityInfo pistolInfo;
     public AbilityInfo rpgInfo;
     public AbilityInfo garlicInfo;
+    public AbilityInfo laserInfo;
 
     private List<string> availableAbilities = new List<string>();
     private TextMeshProUGUI[] buttonTexts;
@@ -93,6 +95,9 @@ public class XPSystem : MonoBehaviour
 
         if (garlicLvl > 0)
             availableAbilities.Add("Garlic");
+
+        if (laserLvl > 0)
+            availableAbilities.Add("Laser");
     }
 
     void LevelUp()
@@ -133,11 +138,18 @@ public class XPSystem : MonoBehaviour
             if (garlicLvl >= garlicInfo.maxLevel && abilityOptions.Contains("Garlic"))
                 abilityOptions.Remove("Garlic");
 
+            if (laserLvl >= laserInfo.maxLevel && abilityOptions.Contains("Laser"))
+                abilityOptions.Remove("Laser");
+
             if (!availableAbilities.Contains("RPG"))
                 abilityOptions.Add("RPG");
 
             if (!availableAbilities.Contains("Garlic"))
                 abilityOptions.Add("Garlic");
+
+            if (!availableAbilities.Contains("Laser"))
+                abilityOptions.Add("Laser");
+
             /*
             if (!availableAbilities.Contains("RPG") && level >= 3)
                 abilityOptions.Add("RPG");
@@ -209,6 +221,16 @@ public class XPSystem : MonoBehaviour
                 if (buttonIcons[buttonIndex] != null && garlicInfo.icon != null)
                     buttonIcons[buttonIndex].sprite = garlicInfo.icon;
                 break;
+
+            case "Laser":
+                if (laserLvl == 0)
+                    buttonTexts[buttonIndex].text = "Unlock Laser Beam\nPenetrates through enemies in a line";
+                else
+                    buttonTexts[buttonIndex].text = $"Laser Lvl {laserLvl + 1}\n{GetLaserUpgradeDescription(laserLvl)}";
+
+                if (buttonIcons[buttonIndex] != null && laserInfo.icon != null)
+                    buttonIcons[buttonIndex].sprite = laserInfo.icon;
+                break;
         }
     }
 
@@ -245,9 +267,21 @@ public class XPSystem : MonoBehaviour
             }
             Debug.Log("Garlic upgraded to level " + garlicLvl);
         }
+        else if (buttonName.Contains("Laser"))
+        {
+            if (laserLvl == 0)
+            {
+                UnlockAbility("Laser");
+            }
+            else
+            {
+                laserLvl++;
+            }
+            Debug.Log("Laser upgraded to level " + laserLvl);
+        }
 
-        // Reduce available upgrade points
-        availableUpgradePoints--;
+            // Reduce available upgrade points
+            availableUpgradePoints--;
 
         // Close the upgrade panel
         if (upgradePanel != null)
@@ -323,6 +357,20 @@ public class XPSystem : MonoBehaviour
         }
     }
 
+    string GetLaserUpgradeDescription(int currentLevel)
+    {
+        switch (currentLevel)
+        {
+            case 0: return "New weapon: Laser Beam";
+            case 1: return "Improved fire rate";
+            case 2: return "Fire rate and Damage boost";
+            case 3: return "More range";
+            case 4: return "Faster fire rate";
+            case 5: return "Evolution: Plasma Beam";
+            default: return "Overall damage +15%";
+        }
+    }
+
     // Helper function to unlock a new ability
     public void UnlockAbility(string abilityName)
     {
@@ -349,6 +397,15 @@ public class XPSystem : MonoBehaviour
                         Transform garlicTransform = player.transform.Find("Garlic");
                         if (garlicTransform != null)
                             garlicTransform.gameObject.SetActive(true);
+                    }
+                    break;
+                case "Laser":
+                    laserLvl = 1;
+                    if (player != null)
+                    {
+                        Transform laserTransform = player.transform.Find("DeathBeam");
+                        if (laserTransform != null)
+                            laserTransform.gameObject.SetActive(true);
                     }
                     break;
             }
