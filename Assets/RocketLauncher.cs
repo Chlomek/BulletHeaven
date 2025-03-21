@@ -19,6 +19,7 @@ public class RocketLauncher : MonoBehaviour
     void Start()
     {
         GetRPGLevel();
+        UpdaterpgLevel();
         if (xpSystem == null)
         {
             Debug.LogError("XPSystem not found in the scene!");
@@ -112,7 +113,7 @@ public class RocketLauncher : MonoBehaviour
             case 0:
                 gameObject.SetActive(false);
                 Debug.Log("rpg weapon deactivated (level 0)");
-                return;
+                break;
             case 1:
                 Damage = 15;
                 firerate = 2f;

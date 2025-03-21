@@ -13,7 +13,7 @@ public class XPSystem : MonoBehaviour
     public int availableUpgradePoints = 0;
 
     public int pistolLvl = 1;
-    public int rpgLvl = 1;
+    public int rpgLvl = 0;
     public int garlicLvl = 0;
     public int laserLvl = 0;
 

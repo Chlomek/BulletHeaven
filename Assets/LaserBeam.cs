@@ -21,6 +21,7 @@ public class LaserBeam : MonoBehaviour
     void Start()
     {
         GetLaserLevel();
+        UpdateLaserLevel();
         if (xpSystem == null)
         {
             Debug.LogError("XPSystem not found in the scene!");
@@ -120,7 +121,7 @@ public class LaserBeam : MonoBehaviour
             case 0:
                 gameObject.SetActive(false);
                 Debug.Log("laser weapon deactivated (level 0)");
-                return;
+                break;
             case 1:
                 fireRate = 2f;
                 damage = 15;
