@@ -16,6 +16,8 @@ public class XPSystem : MonoBehaviour
     public int rpgLvl = 0;
     public int garlicLvl = 0;
     public int laserLvl = 0;
+    public int shotgunLvl = 0;
+    public int granadeLvl = 0;
 
     [Header("UI References")]
     public GameObject upgradePanel;
@@ -39,6 +41,8 @@ public class XPSystem : MonoBehaviour
     public AbilityInfo rpgInfo;
     public AbilityInfo garlicInfo;
     public AbilityInfo laserInfo;
+    public AbilityInfo shotgunInfo;
+    public AbilityInfo granadeInfo;
 
     private List<string> availableAbilities = new List<string>();
     private TextMeshProUGUI[] buttonTexts;
@@ -98,6 +102,12 @@ public class XPSystem : MonoBehaviour
 
         if (laserLvl > 0)
             availableAbilities.Add("Laser");
+
+        if (shotgunLvl > 0)
+            availableAbilities.Add("Shotgun");
+
+        if (granadeLvl > 0)
+            availableAbilities.Add("Granade");
     }
 
     void LevelUp()
@@ -141,6 +151,12 @@ public class XPSystem : MonoBehaviour
             if (laserLvl >= laserInfo.maxLevel && abilityOptions.Contains("Laser"))
                 abilityOptions.Remove("Laser");
 
+            if (laserLvl >= laserInfo.maxLevel && abilityOptions.Contains("Shotgun"))
+                abilityOptions.Remove("Shotgun");
+
+            if (laserLvl >= laserInfo.maxLevel && abilityOptions.Contains("Granade"))
+                abilityOptions.Remove("Granade");
+
             if (!availableAbilities.Contains("RPG"))
                 abilityOptions.Add("RPG");
 
@@ -149,6 +165,12 @@ public class XPSystem : MonoBehaviour
 
             if (!availableAbilities.Contains("Laser"))
                 abilityOptions.Add("Laser");
+
+            if (!availableAbilities.Contains("Shotgun"))
+                abilityOptions.Add("Shotgun");
+
+            if (!availableAbilities.Contains("Granade"))
+                abilityOptions.Add("Granade");
 
             /*
             if (!availableAbilities.Contains("RPG") && level >= 3)
@@ -231,6 +253,26 @@ public class XPSystem : MonoBehaviour
                 if (buttonIcons[buttonIndex] != null && laserInfo.icon != null)
                     buttonIcons[buttonIndex].sprite = laserInfo.icon;
                 break;
+
+            case "Shotgun":
+                if (shotgunLvl == 0)
+                    buttonTexts[buttonIndex].text = "Unlock Shotgun\nShoots multiple projectiles";
+                else
+                    buttonTexts[buttonIndex].text = $"Shotgun {shotgunLvl + 1}\n{GetShotgunUpgradeDescription(shotgunLvl)}";
+
+                if (buttonIcons[buttonIndex] != null && shotgunInfo.icon != null)
+                    buttonIcons[buttonIndex].sprite = shotgunInfo.icon;
+                break;
+
+            case "Granade":
+                if (granadeLvl == 0)
+                    buttonTexts[buttonIndex].text = "Unlock Granade Launcher\nRandomly shoots at nearby enemy";
+                else
+                    buttonTexts[buttonIndex].text = $"Granade Launcher {granadeLvl + 1}\n{GetGranadeUpgradeDescription(granadeLvl)}";
+
+                if (buttonIcons[buttonIndex] != null && granadeInfo.icon != null)
+                    buttonIcons[buttonIndex].sprite = granadeInfo.icon;
+                break;
         }
     }
 
@@ -279,9 +321,33 @@ public class XPSystem : MonoBehaviour
             }
             Debug.Log("Laser upgraded to level " + laserLvl);
         }
+        else if (buttonName.Contains("Shotgun"))
+        {
+            if (shotgunLvl == 0)
+            {
+                UnlockAbility("Shotgun");
+            }
+            else
+            {
+                shotgunLvl++;
+            }
+            Debug.Log("Shotgun upgraded to level " + shotgunLvl);
+        }
+        else if (buttonName.Contains("Granade"))
+        {
+            if (granadeLvl == 0)
+            {
+                UnlockAbility("Granade");
+            }
+            else
+            {
+                granadeLvl++;
+            }
+            Debug.Log("Granade upgraded to level " + granadeLvl);
+        }
 
-            // Reduce available upgrade points
-            availableUpgradePoints--;
+        // Reduce available upgrade points
+        availableUpgradePoints--;
 
         // Close the upgrade panel
         if (upgradePanel != null)
@@ -371,6 +437,33 @@ public class XPSystem : MonoBehaviour
         }
     }
 
+    string GetShotgunUpgradeDescription(int currentLevel)
+    {
+        switch (currentLevel)
+        {
+            case 0: return "New weapon: Shotgun";
+            case 1: return "Improved fire rate and +1 pellet";
+            case 2: return "Damage boost and tighter spread";
+            case 3: return "Faster fire rate and increased velocity";
+            case 4: return "Higher damage and +1 pellet";
+            case 5: return "Evolution: Combat Shotgun";
+            default: return "Overall damage +15%";
+        }
+    }
+
+    string GetGranadeUpgradeDescription(int currentLevel)
+    {
+        switch (currentLevel)
+        {
+            case 0: return "New weapon: Rocket Launcher";
+            case 1: return "Splash radius +20%";
+            case 2: return "Damage +20%";
+            case 3: return "Fire rate +15%";
+            case 4: return "Splash radius +25%";
+            default: return "Overall damage +15%";
+        }
+    }
+
     // Helper function to unlock a new ability
     public void UnlockAbility(string abilityName)
     {
@@ -406,6 +499,24 @@ public class XPSystem : MonoBehaviour
                         Transform laserTransform = player.transform.Find("DeathBeam");
                         if (laserTransform != null)
                             laserTransform.gameObject.SetActive(true);
+                    }
+                    break;
+                case "Shotgun":
+                    shotgunLvl = 1;
+                    if (player != null)
+                    {
+                        Transform shotgunTransform = player.transform.Find("Shotgun");
+                        if (shotgunTransform != null)
+                            shotgunTransform.gameObject.SetActive(true);
+                    }
+                    break;
+                case "Granade":
+                    granadeLvl = 1;
+                    if (player != null)
+                    {
+                        Transform granadeTransform = player.transform.Find("GranadeLauncher");
+                        if (granadeTransform != null)
+                            granadeTransform.gameObject.SetActive(true);
                     }
                     break;
             }

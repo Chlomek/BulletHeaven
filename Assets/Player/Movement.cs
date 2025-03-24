@@ -5,6 +5,7 @@ using UnityEngine;
 public class Movement : MonoBehaviour
 {
     public float moveSpeed = 1;
+    public Vector2 lookDirection = Vector2.right;
 
 
     // Start is called before the first frame update
@@ -19,5 +20,10 @@ public class Movement : MonoBehaviour
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
         transform.Translate(new Vector3(horizontalInput, verticalInput, 0) * moveSpeed * Time.deltaTime);
+
+        if (horizontalInput != 0 || verticalInput != 0)
+        {
+            lookDirection = new Vector2(horizontalInput, verticalInput).normalized;
+        }
     }
 }
