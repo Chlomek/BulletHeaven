@@ -10,6 +10,7 @@ public class Timer : MonoBehaviour
 {
     public TMP_Text TimeAlive;
     private float elapsedTime;
+    public string formattedTime;
 
     // Start is called before the first frame update
     void Start()
@@ -25,7 +26,7 @@ public class Timer : MonoBehaviour
         elapsedTime += Time.deltaTime; // Increment elapsed time by the time since the last frame
 
         TimeSpan timeSpan = TimeSpan.FromSeconds(elapsedTime);
-        string formattedTime = string.Format("{0:D2}:{1:D2}", timeSpan.Minutes, timeSpan.Seconds);
+        formattedTime = string.Format("{0:D2}:{1:D2}", timeSpan.Minutes, timeSpan.Seconds);
 
         TimeAlive.text = formattedTime;
     }

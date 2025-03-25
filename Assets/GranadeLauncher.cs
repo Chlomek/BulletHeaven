@@ -16,7 +16,6 @@ public class GrenadeLauncher : MonoBehaviour
 
     void Start()
     {
-        GetGrenadeLevel();
         UpdateGrenadeLevel();
         if (xpSystem == null)
         {

@@ -13,12 +13,12 @@ public class ShotgunScript : MonoBehaviour
     [SerializeField] private XPSystem xpSystem;
 
     private float lastShot = 0.0f;
-    private int lvl = 0;
+    [SerializeField] private int lvl = 0;
     public Movement movementScript;
 
     void Start()
     {
-        GetShotgunLevel();
+        UpdateShotgunLevel();
         if (movementScript == null)
         {
             Debug.LogError("Movement script not found");
@@ -103,6 +103,10 @@ public class ShotgunScript : MonoBehaviour
         GetShotgunLevel();
         switch (lvl)
         {
+            case 0:
+                gameObject.SetActive(false);
+                Debug.Log("Shotgun weapon deactivated (level 0)");
+                break;
             case 1:
                 firerate = 1.5f;
                 damagePerPellet = 5;

@@ -15,6 +15,7 @@ public class Health : MonoBehaviour
     private bool Isplayer = false;
 
     public GameObject orb;
+    public GameObject DeathScreen;
 
     void Start()
     {
@@ -45,6 +46,7 @@ public class Health : MonoBehaviour
         if (Isplayer)
         {
             Debug.Log("Player died");
+            DeathScreen.GetComponent<DeathScreenManager>().ShowDeathScreen();
         }
         else
         {

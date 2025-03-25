@@ -20,7 +20,6 @@ public class LaserBeam : MonoBehaviour
 
     void Start()
     {
-        GetLaserLevel();
         UpdateLaserLevel();
         if (xpSystem == null)
         {
