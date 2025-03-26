@@ -115,6 +115,8 @@ public class XPSystem : MonoBehaviour
         level++;
         xp -= (int)xpNeededForNextLevel;
         xpNeededForNextLevel = Mathf.Round(xpMultiplierForNextLevel * xpNeededForNextLevel);
+        if (xpNeededForNextLevel > 50)
+            xpNeededForNextLevel = 50;
         availableUpgradePoints++;
 
         // Show upgrade selection panel

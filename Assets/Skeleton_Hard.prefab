@@ -178,10 +178,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6337bb2d6a4b15d47abf5a193ba27932, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 10
+  maxHealth: 30
   health: 0
-  enemyValue: 1
+  enemyValue: 10
   orb: {fileID: 6313112570599523014, guid: 9649fb11304dec34a915d33da247a35e, type: 3}
+  DeathScreen: {fileID: 0}
 --- !u!70 &732284102744065131
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

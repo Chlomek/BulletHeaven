@@ -12,6 +12,7 @@ public class GarlicScript : MonoBehaviour
     private Dictionary<GameObject, float> enemyLastHitTime = new Dictionary<GameObject, float>();
     [SerializeField] private XPSystem xpSystem;
     private CircleCollider2D circleCollider;
+    private ParticleSystem ps;
 
     void Start()
     {
@@ -25,6 +26,11 @@ public class GarlicScript : MonoBehaviour
         if (circleCollider == null)
         {
             Debug.LogError("CircleCollider2D not found on the garlic weapon!");
+        }
+        ps = GetComponent<ParticleSystem>();
+        if (ps == null)
+        {
+            Debug.LogError("ParticleSystem not found on the garlic weapon!");
         }
 
         UpdateGarlicLevel();
@@ -41,6 +47,7 @@ public class GarlicScript : MonoBehaviour
     private void UpdateGarlicLevel()
     {
         GetGarlicLevel();
+        var main = ps.main;
 
         switch (lvl)
         {
@@ -49,43 +56,42 @@ public class GarlicScript : MonoBehaviour
                 Debug.Log("Garlic weapon deactivated (level 0)");
                 break;
             case 1:
-                damage = 2;
+                damage = 4;
                 damageRate = 1.0f;
-                range = 1.5f;
-                Debug.Log($"Garlic weapon set to level 1: {damage} damage, 1,5 radius");
+                range = 2.5f;
+                main.startLifetime = 2f; 
                 break;
 
             case 2:
-                damage = 2;
+                damage = 4;
                 damageRate = 1.0f;
-                range = 1.8f;
-                Debug.Log($"Garlic weapon set to level 2: {damage} damage, 1.8 radius");
+                range = 3f;
+                main.startLifetime = 2.5f;
                 break;
             case 3:
-                damage = 3;
+                damage = 7;
                 damageRate = 1.0f;
-                range = 1.8f;
-                Debug.Log($"Garlic weapon set to level 3: {damage} damage, 1.8 radius");
+                range = 3f;
+                main.startLifetime = 2.5f;
                 break;
             case 4:
-                damage = 3;
+                damage = 10;
                 damageRate = 0.8f;
-                range = 1.8f;
-                Debug.Log($"Garlic weapon set to level 4: {damage} damage, 1.8 radius, faster tick rate");
+                range = 3f;
                 break;
             case 5:
-                damage = 3;
+                damage = 15;
                 damageRate = 0.8f;
-                range = 2.25f;
-                Debug.Log($"Garlic weapon set to level 5: {damage} damage, 2.25 radius, faster tick rate");
+                range = 3.5f;
+                main.startLifetime = 3f;
                 break;
             default:
                 damage = 2;
                 damageRate = 1.0f;
                 range = 1.5f;
-                Debug.Log($"Garlic weapon defaulted to level 1 settings: {damage} damage, 1.5 radius");
                 break;
         }
+
         circleCollider.radius = range;
     }
 
