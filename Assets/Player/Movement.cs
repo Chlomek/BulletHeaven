@@ -19,7 +19,8 @@ public class Movement : MonoBehaviour
     {
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
-        transform.Translate(new Vector3(horizontalInput, verticalInput, 0) * moveSpeed * Time.deltaTime);
+        Vector2 direction = new Vector2(horizontalInput, verticalInput);
+        transform.Translate(direction.normalized * moveSpeed * Time.deltaTime);
 
         if (horizontalInput != 0 || verticalInput != 0)
         {
@@ -27,3 +28,4 @@ public class Movement : MonoBehaviour
         }
     }
 }
+
