@@ -4,20 +4,20 @@ using UnityEngine.UI;
 
 public class DeathScreenManager : MonoBehaviour
 {
-    public GameObject timeDisplayObject; // Assign the GameObject that holds the formatted time
+    public GameObject timeDisplayObject;
     public TextMeshProUGUI deathScreenText; 
-    public GameObject deathScreenUI; // Assign the Death Screen UI Panel
+    public GameObject deathScreenUI;
 
     private void Start()
     {
-        deathScreenUI.SetActive(false); // Hide the death screen initially
+        deathScreenUI.SetActive(false);
     }
 
     public void ShowDeathScreen()
     {
         if (timeDisplayObject != null)
         {
-            TextMeshProUGUI timeText = timeDisplayObject.GetComponent<TextMeshProUGUI>(); // Get the TMP component
+            TextMeshProUGUI timeText = timeDisplayObject.GetComponent<TextMeshProUGUI>();
             if (timeText != null)
             {
                 deathScreenText.text = "You survived for: " + timeText.text;
@@ -33,6 +33,6 @@ public class DeathScreenManager : MonoBehaviour
         }
 
         Time.timeScale = 0f;
-        deathScreenUI.SetActive(true); // Show the death screen
+        deathScreenUI.SetActive(true);
     }
 }

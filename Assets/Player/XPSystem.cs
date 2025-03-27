@@ -74,16 +74,12 @@ public class XPSystem : MonoBehaviour
 
     void Update()
     {
-        // Check for level up
         if (xp >= xpNeededForNextLevel)
         {
             LevelUp();
         }
-
-        // Update UI elements
         UpdateUI();
 
-        // Debug input to add XP (remove in production)
         if (Input.GetKeyDown(KeyCode.X))
         {
             AddXP(5);
@@ -119,10 +115,8 @@ public class XPSystem : MonoBehaviour
             xpNeededForNextLevel = 50;
         availableUpgradePoints++;
 
-        // Show upgrade selection panel
         ShowUpgradeOptions();
 
-        // Optionally pause the game
         Time.timeScale = 0f;
     }
 
@@ -137,10 +131,8 @@ public class XPSystem : MonoBehaviour
         {
             upgradePanel.SetActive(true);
 
-            // Create a list of abilities to choose from
             List<string> abilityOptions = new List<string>(availableAbilities);
 
-            // Remove maxed out abilities
             if (pistolLvl >= pistolInfo.maxLevel && abilityOptions.Contains("Pistol"))
                 abilityOptions.Remove("Pistol");
 
@@ -174,20 +166,11 @@ public class XPSystem : MonoBehaviour
             if (!availableAbilities.Contains("Granade"))
                 abilityOptions.Add("Granade");
 
-            /*
-            if (!availableAbilities.Contains("RPG") && level >= 3)
-                abilityOptions.Add("RPG");
-
-            if (!availableAbilities.Contains("Garlic") && level >= 5)
-                abilityOptions.Add("Garlic");
-            */
-            // If we have fewer options than buttons, add placeholders or duplicate options
             while (abilityOptions.Count < upgradeButtons.Length && abilityOptions.Count > 0)
             {
                 abilityOptions.Add(abilityOptions[Random.Range(0, abilityOptions.Count)]);
             }
 
-            // Shuffle the options
             for (int i = 0; i < abilityOptions.Count; i++)
             {
                 string temp = abilityOptions[i];
@@ -196,7 +179,6 @@ public class XPSystem : MonoBehaviour
                 abilityOptions[randomIndex] = temp;
             }
 
-            // Assign options to buttons
             for (int i = 0; i < upgradeButtons.Length; i++)
             {
                 if (i < abilityOptions.Count)
@@ -214,10 +196,8 @@ public class XPSystem : MonoBehaviour
 
     void SetButtonAbility(int buttonIndex, string abilityName)
     {
-        // Tag the button with the ability name (for retrieval when clicked)
         upgradeButtons[buttonIndex].name = "Button_" + abilityName;
 
-        // Set the button text and icon based on ability
         switch (abilityName)
         {
             case "Pistol":
@@ -348,44 +328,35 @@ public class XPSystem : MonoBehaviour
             Debug.Log("Granade upgraded to level " + granadeLvl);
         }
 
-        // Reduce available upgrade points
         availableUpgradePoints--;
 
-        // Close the upgrade panel
         if (upgradePanel != null)
             upgradePanel.SetActive(false);
 
-        // Resume game if it was paused
         Time.timeScale = 1f;
 
-        // Check if there are more upgrades available
         if (availableUpgradePoints > 0)
         {
-            // Show more upgrade options
+            Time.timeScale = 0f;
             ShowUpgradeOptions();
         }
     }
 
     void UpdateUI()
     {
-        // Update level text
         if (levelText != null)
             levelText.text = "Level: " + level.ToString();
 
-        // Update XP text
         if (xpText != null)
             xpText.text = xp + "/" + xpNeededForNextLevel;
 
-        // Update XP fill bar
         if (xpFillBar != null)
         {
-            //xpFillBar.fillAmount = (float)xp / xpNeededForNextLevel;
             xpSlider.maxValue = xpNeededForNextLevel;
             xpSlider.value = xp;
         }
     }
 
-    // Get upgrade descriptions
     string GetPistolUpgradeDescription(int currentLevel)
     {
         switch (currentLevel)
@@ -466,7 +437,6 @@ public class XPSystem : MonoBehaviour
         }
     }
 
-    // Helper function to unlock a new ability
     public void UnlockAbility(string abilityName)
     {
         if (!availableAbilities.Contains(abilityName))

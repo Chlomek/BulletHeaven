@@ -25,7 +25,6 @@ public class XPOrb : MonoBehaviour
 
         if (distanceToPlayer <= attractionDistance)
         {
-            // Move towards the player
             transform.position = Vector2.MoveTowards(transform.position, player.position, attractionSpeed * Time.deltaTime);
         }
     }
