@@ -25,7 +25,9 @@ public class XPOrb : MonoBehaviour
 
         if (distanceToPlayer <= attractionDistance)
         {
-            transform.position = Vector2.MoveTowards(transform.position, player.position, attractionSpeed * Time.deltaTime);
+            float t = 1f - Mathf.Exp(-attractionSpeed * Time.deltaTime);
+
+            transform.position = Vector2.Lerp(transform.position, player.position, t);
         }
     }
 

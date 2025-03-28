@@ -98,8 +98,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7a4f9460f051e54bbb699b6a731ed20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attractionDistance: 2
-  attractionSpeed: 3
+  attractionDistance: 3
+  attractionSpeed: 6
   xpAmount: 1
   lifeTime: 30
 --- !u!58 &1424128595581201617
