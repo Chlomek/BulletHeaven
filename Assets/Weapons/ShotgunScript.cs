@@ -139,7 +139,7 @@ public class ShotgunScript : MonoBehaviour
                 firerate = 0.8f;
                 damagePerPellet = 8;
                 bulletSpeed = 14f;
-                pelletCount = 10;
+                pelletCount = 15;
                 spreadAngle = 20f;
                 break;
             default:

@@ -16,8 +16,6 @@ public class Shoot : MonoBehaviour
     private int lvl = 0;
     [SerializeField] private XPSystem xpSystem;
 
-    //shoots at closest enemy
-
     void start()
     {
         GetPistolLevel();
@@ -95,12 +93,12 @@ public class Shoot : MonoBehaviour
                 break;
             case 5:
                 firerate = 0.6f;
-                Damage = 12;
+                Damage = 15;
                 bulletSpeed = 12;
                 break;
             case 6:
                 firerate = 0.2f;
-                Damage = 6;
+                Damage = 15;
                 bulletSpeed = 15;
                 break;
             default:

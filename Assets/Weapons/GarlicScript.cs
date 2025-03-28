@@ -61,7 +61,6 @@ public class GarlicScript : MonoBehaviour
                 range = 2.5f;
                 main.startLifetime = 2f; 
                 break;
-
             case 2:
                 damage = 4;
                 damageRate = 1.0f;

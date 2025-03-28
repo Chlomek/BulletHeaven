@@ -171,24 +171,27 @@ public class XPSystem : MonoBehaviour
                 abilityOptions.Add(abilityOptions[Random.Range(0, abilityOptions.Count)]);
             }
 
-            for (int i = 0; i < abilityOptions.Count; i++)
+            if (abilityOptions.Count != 0)
             {
-                string temp = abilityOptions[i];
-                int randomIndex = Random.Range(i, abilityOptions.Count);
-                abilityOptions[i] = abilityOptions[randomIndex];
-                abilityOptions[randomIndex] = temp;
-            }
-
-            for (int i = 0; i < upgradeButtons.Length; i++)
-            {
-                if (i < abilityOptions.Count)
+                for (int i = 0; i < abilityOptions.Count; i++)
                 {
-                    upgradeButtons[i].gameObject.SetActive(true);
-                    SetButtonAbility(i, abilityOptions[i]);
+                    string temp = abilityOptions[i];
+                    int randomIndex = Random.Range(i, abilityOptions.Count);
+                    abilityOptions[i] = abilityOptions[randomIndex];
+                    abilityOptions[randomIndex] = temp;
                 }
-                else
+
+                for (int i = 0; i < upgradeButtons.Length; i++)
                 {
-                    upgradeButtons[i].gameObject.SetActive(false);
+                    if (i < abilityOptions.Count)
+                    {
+                        upgradeButtons[i].gameObject.SetActive(true);
+                        SetButtonAbility(i, abilityOptions[i]);
+                    }
+                    else
+                    {
+                        upgradeButtons[i].gameObject.SetActive(false);
+                    }
                 }
             }
         }
@@ -240,7 +243,7 @@ public class XPSystem : MonoBehaviour
                 if (shotgunLvl == 0)
                     buttonTexts[buttonIndex].text = "Unlock Shotgun\nShoots multiple projectiles";
                 else
-                    buttonTexts[buttonIndex].text = $"Shotgun {shotgunLvl + 1}\n{GetShotgunUpgradeDescription(shotgunLvl)}";
+                    buttonTexts[buttonIndex].text = $"Shotgun Lvl {shotgunLvl + 1}\n{GetShotgunUpgradeDescription(shotgunLvl)}";
 
                 if (buttonIcons[buttonIndex] != null && shotgunInfo.icon != null)
                     buttonIcons[buttonIndex].sprite = shotgunInfo.icon;
@@ -250,7 +253,7 @@ public class XPSystem : MonoBehaviour
                 if (granadeLvl == 0)
                     buttonTexts[buttonIndex].text = "Unlock Granade Launcher\nRandomly shoots at nearby enemy";
                 else
-                    buttonTexts[buttonIndex].text = $"Granade Launcher {granadeLvl + 1}\n{GetGranadeUpgradeDescription(granadeLvl)}";
+                    buttonTexts[buttonIndex].text = $"Granade Launcher Lvl {granadeLvl + 1}\n{GetGranadeUpgradeDescription(granadeLvl)}";
 
                 if (buttonIcons[buttonIndex] != null && granadeInfo.icon != null)
                     buttonIcons[buttonIndex].sprite = granadeInfo.icon;
@@ -359,81 +362,87 @@ public class XPSystem : MonoBehaviour
 
     string GetPistolUpgradeDescription(int currentLevel)
     {
-        switch (currentLevel)
+        switch (currentLevel + 1)
         {
-            case 1: return "Fire rate +20%";
+            case 1: return "Fire rate +25%";
             case 2: return "Damage +20%";
-            case 3: return "Fire rate +25%";
-            case 4: return "Bullet speed +20%";
-            case 5: return "Evolution: Machine Gun";
-            default: return "Overall damage +10%";
+            case 3: return "Fire rate +33%";
+            case 4: return "Damage +25%";
+            case 5: return "Bullet speed +20%";
+            case 6: return "Evolution: Machine Gun";
+            default: return $"Fire rate increased (1/{currentLevel})";
         }
     }
 
     string GetRPGUpgradeDescription(int currentLevel)
     {
-        switch (currentLevel)
+        switch (currentLevel + 1)
         {
-            case 0: return "New weapon: Rocket Launcher";
-            case 1: return "Splash radius +20%";
-            case 2: return "Damage +20%";
-            case 3: return "Fire rate +15%";
-            case 4: return "Splash radius +25%";
-            default: return "Overall damage +15%";
+            case 0: return "New weapon: Rocket Launcher (locked)";
+            case 1: return "Base damage 15, fire rate 2s";
+            case 2: return "Splash radius +20%";
+            case 3: return "Damage +20%";
+            case 4: return "Fire rate +15%";
+            case 5: return "Splash radius +25%";
+            default: return "Overall splash radius +25%";
         }
     }
 
     string GetGarlicUpgradeDescription(int currentLevel)
     {
-        switch (currentLevel)
+        switch (currentLevel + 1)
         {
-            case 0: return "New ability: Damage nearby enemies";
-            case 1: return "Area of effect +20%";
-            case 2: return "Damage +25%";
-            case 3: return "Tick rate increased";
-            case 4: return "Area of effect +25%";
+            case 0: return "New ability: Damage nearby enemies (locked)";
+            case 1: return "Base damage 4, AoE 2.5m";
+            case 2: return "Area of effect +20%";
+            case 3: return "Damage +75%";
+            case 4: return "Tick rate increased (faster damage over time)";
+            case 5: return "Area of effect +25% & Damage +50%";
             default: return "Overall damage +20%";
         }
     }
 
     string GetLaserUpgradeDescription(int currentLevel)
     {
-        switch (currentLevel)
+        switch (currentLevel + 1)
         {
-            case 0: return "New weapon: Laser Beam";
-            case 1: return "Improved fire rate";
-            case 2: return "Fire rate and Damage boost";
-            case 3: return "More range";
-            case 4: return "Faster fire rate";
-            case 5: return "Evolution: Plasma Beam";
-            default: return "Overall damage +15%";
+            case 0: return "New weapon: Laser Beam (locked)";
+            case 1: return "Base damage 15, fire rate 2s";
+            case 2: return "Faster fire rate & damage boost";
+            case 3: return "Damage +33%";
+            case 4: return "Increased range";
+            case 5: return "Fire rate +12% & range +25%";
+            case 6: return "Evolution: Plasma Beam";
+            default: return "Overall fire rate & damage improvement";
         }
     }
 
     string GetShotgunUpgradeDescription(int currentLevel)
     {
-        switch (currentLevel)
+        switch (currentLevel + 1)
         {
-            case 0: return "New weapon: Shotgun";
-            case 1: return "Improved fire rate and +1 pellet";
-            case 2: return "Damage boost and tighter spread";
-            case 3: return "Faster fire rate and increased velocity";
-            case 4: return "Higher damage and +1 pellet";
-            case 5: return "Evolution: Combat Shotgun";
-            default: return "Overall damage +15%";
+            case 0: return "New weapon: Shotgun (locked)";
+            case 1: return "Fire rate 1.5s, 6 pellets";
+            case 2: return "Fire rate +10% & +1 pellet";
+            case 3: return "Damage +20% & tighter spread";
+            case 4: return "Fire rate +10%, velocity +10%";
+            case 5: return "Damage +20%, +1 pellet";
+            case 6: return "Evolution: Combat Shotgun";
+            default: return "Further improved fire rate & pellet count";
         }
     }
 
     string GetGranadeUpgradeDescription(int currentLevel)
     {
-        switch (currentLevel)
+        switch (currentLevel + 1)
         {
-            case 0: return "New weapon: Rocket Launcher";
-            case 1: return "Splash radius +20%";
-            case 2: return "Damage +20%";
-            case 3: return "Fire rate +15%";
-            case 4: return "Splash radius +25%";
-            default: return "Overall damage +15%";
+            case 0: return "New weapon: Grenade Launcher (locked)";
+            case 1: return "Base damage 15, fire rate 2s";
+            case 2: return "Splash radius +25%, fire rate +10%";
+            case 3: return "Damage +20%, fire rate +12.5%";
+            case 4: return "Splash radius +20%, damage +15%";
+            case 5: return "Fire rate +15%, splash radius +15%, damage +20%";
+            default: return "Further increased damage and fire rate";
         }
     }
 
